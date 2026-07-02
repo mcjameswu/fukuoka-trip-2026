@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>福岡親子行程手帳 2026/7/2–7/11</title>
+<style>
+:root{
+  --green:#1E4636; --green2:#2C5E49; --brass:#B98F2D; --paper:#F3F1E8;
+  --ink:#20261F; --sub:#6B7266; --line:#DAD5C6; --card:#FFFFFF;
+  --warn:#A8432B; --warnbg:#F7E8E2; --ok:#3E7B52; --okbg:#E7F0E9;
+  --amber:#9A6B12; --amberbg:#F6EDD8; --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,sans-serif;
+  background:var(--paper); color:var(--ink); font-size:15px; line-height:1.5;
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));
+}
+button{font-family:inherit; border:none; cursor:pointer; background:none; color:inherit}
+header{background:var(--green); color:#F5F2E6; padding:12px 14px 0; position:sticky; top:0; z-index:20}
+.hd-top{display:flex; align-items:baseline; gap:8px}
+.hd-top h1{font-size:17px; margin:0; font-weight:700; letter-spacing:.06em}
+.hd-top small{color:#CBBE8E; font-size:11.5px; letter-spacing:.05em}
+.tabs{display:flex; gap:6px; overflow-x:auto; padding:10px 2px 0; scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:0 0 auto; min-width:56px; padding:7px 10px 9px; text-align:center;
+  background:#2A5443; color:#DCD6BF; border-radius:10px 10px 0 0; font-size:12px; line-height:1.25;
+}
+.tab b{display:block; font-size:15px; font-weight:700}
+.tab.on{background:var(--paper); color:var(--green); position:relative}
+.tab.on::after{content:""; position:absolute; left:12px; right:12px; top:4px; height:3px; border-radius:2px; background:var(--brass)}
+.tab .dot{display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--brass); margin-left:3px; vertical-align:2px}
+main{padding:12px 12px 8px; max-width:560px; margin:0 auto}
+.seg{display:flex; background:#E7E3D5; border-radius:12px; padding:3px; margin-bottom:10px}
+.seg button{flex:1; padding:9px 0; border-radius:10px; font-size:14px; font-weight:600; color:var(--sub)}
+.seg button.on{background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.meta{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; font-size:13px; color:var(--sub)}
+.meta input[type=time]{font:inherit; border:1px solid var(--line); border-radius:8px; padding:3px 6px; background:var(--card); color:var(--ink)}
+/* route strip (signature) */
+.strip{
+  display:flex; align-items:center; gap:0; overflow-x:auto; padding:10px 6px; margin:0 0 10px;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius); scrollbar-width:none;
+}
+.strip::-webkit-scrollbar{display:none}
+.st-node{flex:0 0 auto; text-align:center; font-size:11.5px; color:var(--green); font-weight:700; min-width:52px}
+.st-node::before{content:""; display:block; width:11px; height:11px; border:3px solid var(--green); border-radius:50%; background:#fff; margin:0 auto 3px}
+.st-node.home::before{background:var(--brass); border-color:var(--brass)}
+.st-link{flex:0 0 auto; min-width:44px; text-align:center; font-size:10.5px; color:var(--sub); position:relative; padding-top:2px}
+.st-link::before{content:""; display:block; height:3px; background:var(--brass); border-radius:2px; margin:4px 2px 3px}
+.st-link.viaHak::before{background:repeating-linear-gradient(90deg,var(--warn) 0 6px,transparent 6px 10px)}
+.st-link.long{color:var(--warn); font-weight:700}
+/* alerts */
+.alerts{display:flex; flex-direction:column; gap:6px; margin-bottom:12px}
+.al{border-radius:10px; padding:8px 10px; font-size:13px; line-height:1.45; display:flex; gap:7px}
+.al .ic{flex:0 0 auto}
+.al.warn{background:var(--warnbg); color:#7C3320}
+.al.tip{background:var(--amberbg); color:var(--amber)}
+.al.ok{background:var(--okbg); color:#2C5A3C}
+/* blocks */
+.blocks{list-style:none; margin:0; padding:0}
+.legrow{display:flex; align-items:center; gap:8px; padding:2px 4px 2px 26px; font-size:12.5px; color:var(--sub)}
+.legrow .lg-line{flex:0 0 2px; align-self:stretch; background:var(--line); min-height:26px; margin-left:-18px}
+.legrow button{color:var(--green2); font-size:12.5px; padding:6px 4px; text-align:left; flex:1; display:flex; gap:6px; align-items:center; min-height:38px}
+.legrow .m{font-weight:700; color:var(--ink)}
+.legrow.bad .m,.legrow.bad button{color:var(--warn)}
+.legsteps{display:none; margin:0 4px 6px 26px; padding:9px 11px; background:#EFEDE2; border-radius:10px; font-size:12.5px; color:#44493F}
+.legsteps.open{display:block}
+.legsteps ol{margin:0 0 6px; padding-left:18px}
+.legsteps .g{border-top:1px dashed var(--line); padding-top:6px; margin-top:4px; color:var(--sub)}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:10px 10px 8px 12px; margin:2px 0; position:relative;
+}
+.card.locked{border-left:4px solid var(--brass)}
+.card .time{font-size:12.5px; color:var(--green2); font-weight:700; letter-spacing:.03em}
+.card .nm{font-size:15.5px; font-weight:700; margin:1px 0 3px; padding-right:96px}
+.chips{display:flex; flex-wrap:wrap; gap:4px; margin-bottom:6px}
+.chip{font-size:11px; padding:1.5px 7px; border-radius:20px; background:#EDEAE0; color:var(--sub)}
+.chip.area{background:var(--green); color:#EFEAD6}
+.chip.wx2{background:var(--okbg); color:var(--ok)}
+.chip.wx1{background:var(--amberbg); color:var(--amber)}
+.chip.wx0{background:var(--warnbg); color:var(--warn); font-weight:700}
+.chip.lock{background:#F1E7CB; color:#7A5E14; font-weight:700}
+.durrow{display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--sub)}
+.durrow .dv{font-weight:700; color:var(--ink); min-width:52px; text-align:center}
+.mini{width:40px; height:34px; border:1px solid var(--line); border-radius:9px; background:#FAF9F4; font-size:15px; font-weight:700; color:var(--green)}
+.mini:active{background:#E9E5D6}
+.ops{position:absolute; right:8px; top:8px; display:flex; gap:5px}
+.ops button{width:40px; height:40px; border-radius:10px; border:1px solid var(--line); background:#FAF9F4; font-size:16px; color:var(--green)}
+.ops button.del{color:var(--warn)}
+.ops button:disabled{opacity:.25}
+.note{font-size:12px; color:var(--sub); margin-top:5px; border-top:1px dashed var(--line); padding-top:5px}
+.home-row{margin:8px 0 4px; padding:9px 12px; background:#E9E6D8; border-radius:10px; font-size:13px; color:#4C5147}
+.total{font-size:12.5px; color:var(--sub); text-align:right; margin-top:6px}
+.empty{padding:26px 10px; text-align:center; color:var(--sub); font-size:14px}
+/* bottom bar */
+.bar{
+  position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex; gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom)); background:rgba(243,241,232,.96);
+  border-top:1px solid var(--line); max-width:560px; margin:0 auto;
+}
+.bar button{flex:1; min-height:50px; border-radius:13px; font-size:13.5px; font-weight:700; line-height:1.2}
+.bar .primary{background:var(--green); color:#F3EFDD}
+.bar .ghost{background:var(--card); border:1px solid var(--line); color:var(--green)}
+/* sheet */
+.mask{display:none; position:fixed; inset:0; background:rgba(28,32,26,.45); z-index:40}
+.mask.open{display:block}
+.sheet{
+  position:fixed; left:0; right:0; bottom:0; z-index:50; background:var(--paper);
+  border-radius:18px 18px 0 0; max-height:82vh; display:none; flex-direction:column;
+  max-width:560px; margin:0 auto; padding-bottom:env(safe-area-inset-bottom);
+}
+.sheet.open{display:flex}
+.sh-hd{padding:12px 14px 8px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line)}
+.sh-hd b{font-size:16px}
+.sh-hd button{font-size:14px; color:var(--sub); padding:8px 10px}
+.areasel{display:flex; gap:6px; overflow-x:auto; padding:9px 12px; scrollbar-width:none}
+.areasel::-webkit-scrollbar{display:none}
+.areasel button{flex:0 0 auto; padding:7px 13px; border-radius:20px; background:var(--card); border:1px solid var(--line); font-size:13px; color:var(--sub)}
+.areasel button.on{background:var(--green); color:#EFEAD6; border-color:var(--green); font-weight:700}
+.plist{overflow-y:auto; padding:4px 12px 14px}
+.pitem{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:7px; display:flex; align-items:center; gap:10px}
+.pitem .info{flex:1; min-width:0}
+.pitem .nm{font-weight:700; font-size:14.5px}
+.pitem .sub{font-size:11.5px; color:var(--sub); margin-top:1px}
+.pitem .add{flex:0 0 auto; width:56px; height:42px; border-radius:11px; background:var(--green); color:#F3EFDD; font-size:14px; font-weight:700}
+.menu{padding:8px 14px 16px; display:flex; flex-direction:column; gap:8px}
+.menu button{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; font-size:15px; font-weight:600; text-align:left; color:var(--ink)}
+.menu .hint{font-size:12px; color:var(--sub); font-weight:400; display:block; margin-top:2px}
+#toast{
+  position:fixed; left:50%; bottom:96px; transform:translateX(-50%); z-index:60;
+  background:var(--ink); color:#F4F2E8; padding:9px 16px; border-radius:22px; font-size:13.5px;
+  opacity:0; transition:opacity .25s; pointer-events:none; max-width:86vw; text-align:center;
+}
+#toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd-top"><h1>福岡親子行程手帳</h1><small>2026・夏 一家四口</small></div>
+  <div class="tabs" id="tabs"></div>
+</header>
+
+<main>
+  <div class="seg" id="wxseg">
+    <button data-m="sunny">☀️ 晴天</button>
+    <button data-m="rainy">🌧️ 雨天</button>
+    <button data-m="hot">🥵 酷暑</button>
+  </div>
+  <div class="meta">
+    <span id="dayTitle"></span>
+    <label>出發 <input type="time" id="startTime"></label>
+  </div>
+  <div class="strip" id="strip"></div>
+  <div class="alerts" id="alerts"></div>
+  <ol class="blocks" id="blocks"></ol>
+  <div id="homeRow"></div>
+  <div class="total" id="total"></div>
+</main>
+
+<div class="bar">
+  <button class="primary" id="btnAdd">＋ 地點</button>
+  <button class="ghost" id="btnRest">＋ 休息</button>
+  <button class="ghost" id="btnOpt">⚡ 優化</button>
+  <button class="ghost" id="btnFile">💾 檔案</button>
+</div>
+
+<div class="mask" id="mask"></div>
+
+<div class="sheet" id="addSheet">
+  <div class="sh-hd"><b>從地點庫加入（今日行程末端）</b><button data-close>關閉 ✕</button></div>
+  <div class="areasel" id="areasel"></div>
+  <div class="plist" id="plist"></div>
+</div>
+
+<div class="sheet" id="fileSheet">
+  <div class="sh-hd"><b>儲存與檔案</b><button data-close>關閉 ✕</button></div>
+  <div class="menu">
+    <button id="btnExport">⬇️ 匯出行程檔（JSON）<span class="hint">下載備份檔，可傳到其他手機或電腦繼續編輯</span></button>
+    <button id="btnImport">⬆️ 開啟行程檔<span class="hint">選擇先前匯出的 JSON 檔，覆蓋目前內容</span></button>
+    <button id="btnReset">↩️ 還原為預設行程<span class="hint">回到工具內建的建議行程（會清除修改）</span></button>
+    <div class="hint" id="storeHint" style="font-size:12px;color:#6B7266;padding:2px 4px"></div>
+  </div>
+</div>
+<input type="file" id="fileInput" accept=".json,application/json" style="display:none">
+
+<div id="toast"></div>
+
+<script>
+/* ================= 資料層 ================= */
+const AREA={air:'機場',hak:'博多',ten:'天神',oho:'大濠',mom:'百道',kai:'貝塚',rop:'六本松',umi:'海之中道',moj:'門司港',kok:'小倉',yuf:'由布院',daz:'太宰府',yan:'柳川'};
+const GTIP='打開 Google Maps → 輸入下方站名（可直接用日文）→ 點「大眾運輸」圖示 → 核對下一班發車時間與月台，再對照本工具的預估分鐘數。';
+
+function K(a,b){return [a,b].sort().join('|')}
+const M={};
+function reg(a,b,m,w,s,g){M[K(a,b)]={m,w,s:s||[],g:g||''}}
+reg('air','hak',12,'地鐵空港線',['入境後跟「地下鉄」指標走到「福岡空港」站','搭空港線（往姪浜方向）2 站到「博多」','博多站筑紫口出站，步行約 8–10 分到住宿（住吉 5-6-21）；行李多可搭計程車約 5 分'],'福岡空港駅 → 博多駅');
+reg('hak','ten',6,'地鐵空港線',['博多站搭空港線（往姪浜）2 站到「天神」'],'博多駅 → 天神駅');
+reg('hak','oho',12,'地鐵空港線',['博多站搭空港線（往姪浜）到「大濠公園」站','3 號出口出站即是公園湖畔'],'博多駅 → 大濠公園駅');
+reg('hak','mom',24,'地鐵＋步行 / 巴士',['空港線到「西新」站約 11 分，1 號出口步行約 15 分到百道濱','或在博多巴士總站搭西鐵巴士 306 號直達「福岡タワー」'],'博多駅 → 西新駅 / 福岡タワー');
+reg('hak','kai',22,'地鐵（1 次轉乘）',['空港線到「中洲川端」','同月台轉箱崎線到終點「貝塚」','出站即是交通公園'],'博多駅 → 貝塚駅');
+reg('hak','rop',15,'地鐵七隈線',['博多站搭七隈線（往橋本）到「六本松」','科學館與車站共構'],'博多駅 → 六本松駅');
+reg('hak','umi',40,'JR 香椎線（或渡輪）',['博多搭 JR 鹿兒島本線到「香椎」','轉香椎線到「海ノ中道」站','海洋世界、海濱公園皆步行可達；回程也可考慮海之中道↔百道渡輪換個玩法'],'博多駅 → 海ノ中道駅');
+reg('hak','moj',82,'JR 快速（部分需小倉轉乘）',['博多搭 JR 鹿兒島本線快速（往小倉方向）約 70 分','直達班次可坐到「門司港」；否則在「小倉」同月台轉門司港方向約 13 分','門司港站出站即是懷舊區'],'博多駅 → 門司港駅');
+reg('hak','kok',16,'山陽新幹線',['博多搭新幹線 1 站到「小倉」，自由席即可、班次密集','帶幼兒建議避開通勤尖峰的自由席'],'博多駅 → 小倉駅（新幹線）');
+reg('hak','yuf',135,'由布院之森／特急由布',['去程 7/6「由布院之森」全車指定席已預約，發車前 20 分到 JR 在來線月台','回程搭「特急由布」或「由布院之森」，指定席需另行劃位（建議抵達由布院後先到綠色窗口劃回程）'],'博多駅 → 由布院駅');
+reg('hak','daz',45,'地鐵＋西鐵（1 次轉乘）',['地鐵到「天神」，步行到「西鉄福岡（天神）」站','搭天神大牟田線（急行）到「西鉄二日市」','轉太宰府線 2 站到「太宰府」，出站即參道'],'西鉄福岡（天神）→ 太宰府駅');
+reg('hak','yan',75,'地鐵＋西鐵特急',['地鐵到「天神」，步行到「西鉄福岡（天神）」站','搭特急（往大牟田）約 49 分到「西鉄柳川」','站前有遊船乘船處免費接駁車'],'西鉄福岡（天神）→ 西鉄柳川駅');
+reg('ten','oho',6,'地鐵空港線',[],'天神駅 → 大濠公園駅');
+reg('ten','daz',40,'西鐵（二日市轉乘）',[],'西鉄福岡（天神）→ 太宰府駅');
+reg('ten','yan',50,'西鐵特急',[],'西鉄福岡（天神）→ 西鉄柳川駅');
+reg('ten','mom',20,'地鐵＋步行',[],'天神駅 → 西新駅');
+reg('oho','rop',12,'巴士或步行＋地鐵',[],'大濠公園 → 六本松');
+reg('oho','mom',15,'西鐵巴士',[],'大濠公園 → 福岡タワー');
+reg('moj','kok',13,'JR 鹿兒島本線',['門司港↔小倉普通車，班次多'],'門司港駅 → 小倉駅');
+reg('daz','yan',52,'西鐵（二日市轉乘）',['太宰府線回「西鉄二日市」轉特急往大牟田方向'],'太宰府駅 → 西鉄柳川駅');
+reg('umi','mom',25,'渡輪 Uminaka Line（季節航班）',['海之中道渡船場搭到 Marizon（百道福岡塔旁）','出發前務必先確認當日是否開航與班表'],'海の中道 渡船 マリゾン');
+
+function leg(a,b){
+  if(a===b) return {m:8,w:'步行／短程移動',s:['同一區內步行或短程巴士即可'],g:''};
+  const d=M[K(a,b)];
+  if(d) return d;
+  const A=M[K(a,'hak')], B=M[K('hak',b)];
+  if(A&&B) return {m:A.m+B.m+10, w:'經博多轉乘', via:1,
+    s:['先由'+AREA[a]+'回博多（約'+A.m+'分）','博多轉乘前往'+AREA[b]+'（約'+B.m+'分）','轉乘與月台移動預留約 10 分'], g:AREA[a]+' → 博多 → '+AREA[b]};
+  return {m:30,w:'路線待查',s:['請用 Google Maps 大眾運輸模式查詢'],g:''};
+}
+
+/* 地點庫：a=區域 d=預設停留(分) i=室內 k=幼兒適合度 b=建議時段 su/ra/ho=晴/雨/酷暑適性(2適合1尚可0不建議) */
+const P=[
+{id:'marine',n:'海洋世界海之中道',a:'umi',d:180,i:1,k:'◎',b:'皆可',su:2,ra:2,ho:2,note:'海豚海獅秀場次先查官網；館內冷氣充足，是海之中道的避暑主力'},
+{id:'umipark',n:'海之中道海濱公園',a:'umi',d:120,i:0,k:'◎',b:'早',su:2,ra:0,ho:1,note:'夏季有兒童戲水區，自備替換衣物；正午酷熱，建議只排上午'},
+{id:'ohori',n:'大濠公園',a:'oho',d:90,i:0,k:'○',b:'早',su:2,ra:0,ho:1,note:'可踩天鵝船；湖畔咖啡店可躲太陽'},
+{id:'maizuru',n:'福岡城跡・舞鶴公園',a:'oho',d:60,i:0,k:'△',b:'早',su:2,ra:0,ho:0,note:'遮蔭少、階梯多，盛夏對 3–4 歲負擔大'},
+{id:'zoo',n:'福岡市動植物園',a:'oho',d:150,i:0,k:'◎',b:'早',su:2,ra:0,ho:1,note:'週一休園；園內坡道多，建議帶推車、開園就進場'},
+{id:'jgarden',n:'大濠公園日本庭園',a:'oho',d:45,i:0,k:'△',b:'皆可',su:2,ra:1,ho:1,note:'清幽，幼兒停留時間不長，適合當串場'},
+{id:'canal',n:'博多運河城',a:'hak',d:120,i:1,k:'○',b:'皆可',su:2,ra:2,ho:2,note:'整點噴泉秀小孩很買單；雨天／酷暑首選'},
+{id:'toy',n:'福岡玩具美術館',a:'hak',d:90,i:1,k:'◎',b:'皆可',su:2,ra:2,ho:2,note:'位於 LaLaport 福岡（竹下站），木質玩具區極適合 3–4 歲；旁邊有實物大鋼彈'},
+{id:'anpan',n:'麵包超人兒童博物館',a:'hak',d:150,i:1,k:'◎',b:'早',su:2,ra:2,ho:2,note:'博多 Riverain（中洲川端站）；開館時段入場人最少，本齡層首選'},
+{id:'kushida',n:'櫛田神社',a:'hak',d:45,i:0,k:'△',b:'皆可',su:2,ra:1,ho:1,note:'7 月山笠祭期間可看巨型飾山笠（7/1–7/15）'},
+{id:'yatai',n:'中洲屋台（路邊攤）',a:'hak',d:75,i:0,k:'○',b:'夜',su:2,ra:0,ho:2,note:'約 18:00 後陸續開攤；素食選項少，素食者可先用餐再陪同體驗氣氛'},
+{id:'hakshop',n:'博多站購物（AMU／阪急）',a:'hak',d:75,i:1,k:'○',b:'皆可',su:2,ra:2,ho:2,note:'超市與藥妝採買；車站內鐵道商品店小孩會喜歡'},
+{id:'ichiran',n:'一蘭拉麵總店（中洲）',a:'hak',d:60,i:1,k:'○',b:'皆可',su:2,ra:2,ho:2,note:'湯底含豬骨，素食者不適；可分流用餐或改附近其他店'},
+{id:'sumiyoshi',n:'住吉神社',a:'hak',d:30,i:0,k:'△',b:'早',su:2,ra:1,ho:1,note:'距住宿步行數分鐘，適合晨間散步暖身'},
+{id:'mojiretro',n:'門司港懷舊區',a:'moj',d:120,i:0,k:'○',b:'傍晚',su:2,ra:1,ho:1,note:'海風較涼；藍翼橋開橋時刻可先查，香蕉人像合照'},
+{id:'railmus',n:'九州鐵道紀念館',a:'moj',d:120,i:1,k:'◎',b:'皆可',su:2,ra:2,ho:2,note:'迷你列車駕駛體驗，火車迷孩子首選；戶外展示區短暫曝曬'},
+{id:'curry',n:'門司港燒咖哩',a:'moj',d:60,i:1,k:'○',b:'午',su:2,ra:2,ho:2,note:'部分店家可做無肉版本，點餐時先詢問'},
+{id:'itozu',n:'到津之森公園（動物園）',a:'kok',d:150,i:0,k:'◎',b:'早',su:2,ra:0,ho:1,note:'可近距離餵食；園內坡多、遮蔭有限，建議上午'},
+{id:'kokuracastle',n:'小倉城',a:'kok',d:60,i:0,k:'△',b:'皆可',su:2,ra:1,ho:1,note:'天守閣內有冷氣展示區，可短暫避暑'},
+{id:'yufumori',n:'由布院之森列車（已預約）',a:'yuf',d:135,i:1,k:'◎',b:'早',su:2,ra:2,ho:2,ride:1,note:'7/6 指定席已預約，不可刪除或移日；車內有沙龍車廂、車長帽拍照'},
+{id:'yunotsubo',n:'湯之坪街道・金鱗湖',a:'yuf',d:150,i:0,k:'○',b:'午',su:2,ra:1,ho:1,note:'沿街小吃多、甜點類素食可食；記得先到綠色窗口劃好回程指定席'},
+{id:'cruise',n:'柳川遊船',a:'yan',d:120,i:0,k:'○',b:'早',su:2,ra:1,ho:1,note:'船有遮棚、夏季船班較涼的是早上；幼兒需全程坐穩'},
+{id:'unagi',n:'柳川鰻魚蒸籠飯',a:'yan',d:60,i:1,k:'○',b:'午',su:2,ra:2,ho:2,note:'名物せいろ蒸し；素食者可單點小菜白飯或自備'},
+{id:'tenmangu',n:'太宰府天滿宮',a:'daz',d:90,i:0,k:'○',b:'早',su:2,ra:1,ho:1,note:'參道吃現烤梅枝餅；上午較涼、人也少'},
+{id:'dazapark',n:'太宰府遊樂園',a:'daz',d:120,i:0,k:'◎',b:'早',su:2,ra:0,ho:1,note:'多數設施專為幼兒設計，就在天滿宮旁；酷暑日建議上午'},
+{id:'kyuhaku',n:'九州國立博物館',a:'daz',d:90,i:1,k:'○',b:'午',su:2,ra:2,ho:2,note:'從天滿宮搭虹之隧道電扶梯即達；1 樓あじっぱ體驗區適合小孩，週一休館'},
+{id:'tower',n:'福岡塔',a:'mom',d:60,i:1,k:'○',b:'傍晚',su:2,ra:2,ho:2,note:'123m 展望台看海景，傍晚可看夕陽'},
+{id:'teamlab',n:'teamLab Forest 福岡',a:'mom',d:90,i:1,k:'◎',b:'皆可',su:2,ra:2,ho:2,note:'BOSS E・ZO（PayPay 巨蛋旁）；互動光影幼兒也能玩，建議先線上購票'},
+{id:'citymus',n:'福岡市博物館',a:'mom',d:90,i:1,k:'△',b:'午',su:2,ra:2,ho:2,note:'國寶金印展示；大廳涼爽，適合搭配福岡塔避暑，週一休館'},
+{id:'science',n:'福岡市科學館',a:'rop',d:120,i:1,k:'◎',b:'皆可',su:2,ra:2,ho:2,note:'6 樓兒童互動區＋球幕劇場；週二休館'},
+{id:'kaizuka',n:'貝塚交通公園',a:'kai',d:90,i:0,k:'◎',b:'早',su:2,ra:0,ho:1,note:'免費；騎小車學交通規則、有退役蒸汽火車與列車展示'},
+{id:'tenchika',n:'天神地下街',a:'ten',d:90,i:1,k:'○',b:'皆可',su:2,ra:2,ho:2,note:'歐風石板地下街，雨天酷暑皆宜，好推推車'},
+{id:'nap',n:'回住宿午睡・休息',a:'hak',d:90,i:1,k:'◎',b:'午',su:2,ra:2,ho:2,note:'配合 13:00–15:00 幼兒午睡節奏；行程再滿也建議每天保留'},
+{id:'checkin',n:'抵達住宿・辦理入住',a:'hak',d:45,i:1,k:'○',b:'夜',su:2,ra:2,ho:2,note:'住吉 5-6-21；博多站步行 8–10 分，行李多建議計程車'},
+{id:'airport',n:'前往機場・報到候機',a:'air',d:150,i:1,k:'○',b:'午',su:2,ra:2,ho:2,note:'20:00 起飛，建議 17:30 前抵機場；地鐵到的是國內線航廈，需再搭免費接駁巴士到國際線（約 15 分，請預留）'},
+];
+const PM={}; P.forEach(p=>PM[p.id]=p);
+const AREAORDER=['hak','ten','oho','mom','rop','kai','umi','daz','yan','moj','kok','yuf','air'];
+
+/* ================= 狀態 ================= */
+function defaultDays(){
+  const B=(pid,o)=>Object.assign({pid,dur:PM[pid].d},o||{});
+  return [
+    {date:'7/2',dow:'四',start:'19:20',origin:'air',blocks:[B('checkin',{locked:1}),B('hakshop')]},
+    {date:'7/3',dow:'五',start:'09:00',origin:'hak',blocks:[B('umipark'),B('marine'),B('nap'),B('yatai')]},
+    {date:'7/4',dow:'六',start:'09:00',origin:'hak',blocks:[B('anpan'),B('nap'),B('canal')]},
+    {date:'7/5',dow:'日',start:'08:40',origin:'hak',blocks:[B('ohori'),B('zoo'),B('nap')]},
+    {date:'7/6',dow:'一',start:'08:50',origin:'hak',blocks:[B('yufumori',{locked:1}),B('yunotsubo'),B('nap')]},
+    {date:'7/7',dow:'二',start:'08:40',origin:'hak',blocks:[B('tenmangu'),B('dazapark'),B('kyuhaku')]},
+    {date:'7/8',dow:'三',start:'08:30',origin:'hak',blocks:[B('railmus'),B('curry'),B('mojiretro')]},
+    {date:'7/9',dow:'四',start:'08:40',origin:'hak',blocks:[B('cruise'),B('unagi'),B('nap')]},
+    {date:'7/10',dow:'五',start:'09:00',origin:'hak',blocks:[B('teamlab'),B('tower'),B('nap'),B('hakshop')]},
+    {date:'7/11',dow:'六',start:'09:00',origin:'hak',blocks:[B('sumiyoshi'),B('hakshop'),{rest:1,label:'整理行李・休息',dur:120},B('airport',{locked:1})]},
+  ];
+}
+let S={v:1,mode:'sunny',cur:0,days:defaultDays()};
+
+let canStore=false;
+try{localStorage.setItem('_t','1');localStorage.removeItem('_t');canStore=true}catch(e){}
+function save(){ if(canStore){ try{localStorage.setItem('fkTrip',JSON.stringify(S))}catch(e){} } }
+function load(){ if(canStore){ try{const r=localStorage.getItem('fkTrip'); if(r){const o=JSON.parse(r); if(o&&o.v===1&&o.days&&o.days.length===10) S=o;}}catch(e){} } }
+load();
+
+/* ================= 計算層 ================= */
+const toMin=t=>{const[a,b]=t.split(':').map(Number);return a*60+b};
+const fm=m=>{m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+
+function computeDay(day){
+  let t=toMin(day.start), prev=day.origin, travel=0;
+  const rows=[];
+  day.blocks.forEach(b=>{
+    let area, lg;
+    if(b.rest){ area=prev; lg={m:0,w:'原地休息／緩衝',s:[],g:''}; }
+    else{
+      const p=PM[b.pid]; area=p.a;
+      if(p.ride) lg={m:0,w:'搭乘本班列車（乘車時間已含在停留時間）',ride:1,s:['發車前 20 分鐘抵達月台','全車指定席，持預約票券入座'],g:'博多駅 由布院之森'};
+      else lg=leg(prev,area);
+    }
+    t+=lg.m; travel+=lg.m;
+    const st=t, dur=b.dur||30; t+=dur;
+    rows.push({b,area,lg,st,en:t});
+    prev=area;
+  });
+  let home=null, homeArr=null;
+  if(rows.length && prev!=='hak' && prev!=='air'){ home=leg(prev,'hak'); homeArr=t+home.m; travel+=home.m; }
+  return {rows,home,homeArr,travel,endArea:prev};
+}
+
+function warningsFor(day,C){
+  const w=[];
+  C.rows.forEach(r=>{
+    if(r.lg.m>=90) w.push({t:'warn',m:'單趟移動達 '+r.lg.m+' 分（前往'+AREA[r.area]+'），對 3–4 歲幼兒負擔大：建議指定席、備零食玩具，或改排他日。'});
+    if(r.lg.via) w.push({t:'warn',m:'「'+(r.b.rest?'休息':PM[r.b.pid].n)+'」這段需折返博多轉乘，路線效率低，建議把同方向景點排在一起。'});
+  });
+  const seq=C.rows.map(r=>r.area);
+  const acts=new Set(seq.filter(a=>a!=='air'));
+  if(acts.size>=3) w.push({t:'warn',m:'今日跨越 '+acts.size+' 個區域，交通占比偏高；帶幼兒建議一天集中 1–2 區。'});
+  const seen={};
+  for(let i=0;i<seq.length;i++){
+    const a=seq[i];
+    if(seen[a]!==undefined && seq[i-1]!==a){
+      const isNap=!C.rows[i].b.rest && C.rows[i].b.pid==='nap';
+      w.push({t:isNap?'tip':'warn',m:isNap?'中午回博多住宿午睡：多一趟來回車程，但配合幼兒午睡屬合理安排。':'行程走回頭路（重複回到'+AREA[a]+'）：建議用「⚡優化」或手動把同區行程排相鄰。'});
+      break;
+    }
+    seen[a]=i;
+  }
+  if(C.homeArr && C.homeArr>toMin('20:30')) w.push({t:'tip',m:'預計 '+fm(C.homeArr)+' 才回到住宿，超過幼兒理想就寢節奏，可縮短停留或刪一站。'});
+  return w;
+}
+
+function wxScore(p){ return S.mode==='sunny'?p.su:(S.mode==='rainy'?p.ra:p.ho); }
+function wxNotes(C){
+  const out=[]; const label=S.mode==='sunny'?'晴天':(S.mode==='rainy'?'雨天':'酷暑');
+  C.rows.forEach(r=>{
+    if(r.b.rest) return;
+    const p=PM[r.b.pid], sc=wxScore(p);
+    if(sc===0){
+      const inDay=new Set(C.rows.filter(x=>!x.b.rest).map(x=>x.b.pid));
+      const alt=P.filter(q=>q.i&&!inDay.has(q.id)&&!q.ride&&q.id!=='checkin'&&q.id!=='airport').slice(0,3).map(q=>q.n).join('、');
+      out.push({t:'warn',m:label+'不建議「'+p.n+'」：可改室內選項，如 '+alt+'。'});
+    }else if(sc===1){
+      out.push({t:'tip',m:'「'+p.n+'」'+(S.mode==='hot'?'酷暑日僅建議早上或傍晚前往，正午改室內或午睡。':(S.mode==='rainy'?'雨天體驗打折（'+(p.note.split('；')[0])+'），可視雨勢調整。':'請注意時段安排。'))});
+    }
+  });
+  if(S.mode==='hot') out.push({t:'tip',m:'酷暑通則：戶外集中在 10:30 前與 16:30 後；11:00–15:00 安排室內或回住宿午睡；隨時補水、幼兒戴帽。'});
+  if(S.mode==='rainy') out.push({t:'tip',m:'雨天通則：優先室內館（水族館、麵包超人、科學館、鐵道紀念館、運河城）；柳川遊船有遮棚小雨可行。'});
+  return out;
+}
+
+/* ================= 優化 ================= */
+function dayCost(origin,list){
+  let prev=origin,c=0;
+  list.forEach(b=>{
+    const area=b.rest?prev:PM[b.pid].a;
+    if(!b.rest&&PM[b.pid].ride){prev=area;return}
+    c+=(b.rest?0:leg(prev,area).m); prev=area;
+  });
+  if(list.length&&prev!=='hak'&&prev!=='air') c+=leg(prev,'hak').m;
+  return c;
+}
+function optimize(){
+  const day=S.days[S.cur], n=day.blocks.length;
+  if(n<2){toast('行程太少，不需優化');return}
+  const fixed=day.blocks.map(b=>!!(b.locked||b.rest||b.pid==='nap'||b.pid==='airport'||b.pid==='checkin'));
+  const movable=day.blocks.filter((b,i)=>!fixed[i]);
+  if(movable.length<2){toast('可調整的行程不足兩項');return}
+  const before=dayCost(day.origin,day.blocks);
+  const result=new Array(n); let prev=day.origin; const rest=movable.slice();
+  for(let i=0;i<n;i++){
+    if(fixed[i]){ result[i]=day.blocks[i]; const b=result[i]; prev=b.rest?prev:PM[b.pid].a; }
+    else{
+      let bi=0,bm=1e9;
+      rest.forEach((b,j)=>{const m=leg(prev,PM[b.pid].a).m; if(m<bm){bm=m;bi=j}});
+      result[i]=rest.splice(bi,1)[0]; prev=PM[result[i].pid].a;
+    }
+  }
+  const after=dayCost(day.origin,result);
+  if(after<before){ day.blocks=result; save(); render(); toast('已優化順序，交通時間 '+before+'→'+after+' 分（省 '+(before-after)+' 分）'); }
+  else toast('目前已是較佳順序（鎖定與午睡項目不移動）');
+}
+
+/* ================= 畫面 ================= */
+const $=id=>document.getElementById(id);
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2600)}
+
+function renderTabs(){
+  $('tabs').innerHTML=S.days.map((d,i)=>{
+    const lock=d.blocks.some(b=>b.locked&&!b.rest&&PM[b.pid]&&PM[b.pid].ride)?'<span class="dot"></span>':'';
+    return '<button class="tab'+(i===S.cur?' on':'')+'" onclick="go('+i+')"><b>'+d.date+'</b>週'+d.dow+lock+'</button>';
+  }).join('');
+}
+function go(i){S.cur=i;save();render();window.scrollTo({top:0})}
+
+function wxChip(p){
+  const sc=wxScore(p);
+  const lb=sc===2?'天氣OK':(sc===1?(S.mode==='hot'?'限早晚':'尚可'):(S.mode==='rainy'?'雨天不宜':'酷暑不宜'));
+  return '<span class="chip wx'+sc+'">'+lb+'</span>';
+}
+
+function render(){
+  renderTabs();
+  document.querySelectorAll('#wxseg button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.mode));
+  const day=S.days[S.cur], C=computeDay(day);
+  $('dayTitle').textContent='2026/'+day.date+'（週'+day.dow+'）'+(S.cur===0?'・晚間抵達':'')+(S.cur===9?'・返程日':'');
+  $('startTime').value=day.start;
+
+  /* route strip */
+  let sh='<div class="st-node home">'+(day.origin==='air'?'機場':'住宿<br>博多')+'</div>';
+  C.rows.forEach(r=>{
+    if(r.lg.m>0) sh+='<div class="st-link'+(r.lg.via?' viaHak':'')+(r.lg.m>=90?' long':'')+'">'+r.lg.m+'分</div>';
+    else sh+='<div class="st-link">'+(r.lg.ride?'乘車':'—')+'</div>';
+    sh+='<div class="st-node">'+AREA[r.area]+'</div>';
+  });
+  if(C.home) sh+='<div class="st-link'+(C.home.m>=90?' long':'')+'">'+C.home.m+'分</div><div class="st-node home">住宿</div>';
+  $('strip').innerHTML=C.rows.length?sh:'<div style="padding:4px 8px;color:#6B7266;font-size:13px">尚無行程，點下方「＋地點」開始安排</div>';
+
+  /* alerts */
+  const alerts=[...warningsFor(day,C),...wxNotes(C)];
+  if(!alerts.length&&C.rows.length) alerts.push({t:'ok',m:'路線順暢、天氣模式下無不適地點。'});
+  $('alerts').innerHTML=alerts.map(a=>'<div class="al '+a.t+'"><span class="ic">'+(a.t==='warn'?'⚠️':a.t==='tip'?'💡':'✅')+'</span><span>'+a.m+'</span></div>').join('');
+
+  /* blocks */
+  let h='';
+  C.rows.forEach((r,i)=>{
+    const b=r.b;
+    if(r.lg.m>0||r.lg.ride){
+      const steps=(r.lg.s||[]).map(s=>'<li>'+s+'</li>').join('');
+      h+='<li class="legrow'+((r.lg.m>=90||r.lg.via)?' bad':'')+'"><span class="lg-line"></span>'+ 
+         '<button onclick="tgl(\'lg'+i+'\')">🚃 <span class="m">'+(r.lg.ride?'乘車':r.lg.m+' 分')+'</span>・'+r.lg.w+' <span style="margin-left:auto">▾ 路線</span></button></li>'+ 
+         '<li class="legsteps" id="lg'+i+'">'+(steps?'<ol>'+steps+'</ol>':'')+'<div class="g">📍 '+GTIP+(r.lg.g?'<br>搜尋關鍵字：<b>'+r.lg.g+'</b>':'')+'</div></li>';
+    }
+    const p=b.rest?null:PM[b.pid];
+    const nm=b.rest?(b.label||'休息／緩衝'):p.n;
+    const chips=b.rest
+      ?'<span class="chip">🛋️ 緩衝</span>'
+      :'<span class="chip area">'+AREA[p.a]+'</span><span class="chip">'+(p.i?'室內':'戶外')+'</span><span class="chip">孩'+p.k+'</span><span class="chip">宜'+p.b+'</span>'+wxChip(p)+(b.locked?'<span class="chip lock">🔒 已預約鎖定</span>':'');
+    h+='<li class="card'+(b.locked?' locked':'')+'">'+
+      '<div class="ops">'+
+        (b.locked?'':'<button onclick="mv('+i+',-1)" '+(i===0?'disabled':'')+'>↑</button><button onclick="mv('+i+',1)" '+(i===day.blocks.length-1?'disabled':'')+'>↓</button><button class="del" onclick="del('+i+')">✕</button>')+
+      '</div>'+
+      '<div class="time">'+fm(r.st)+' – '+fm(r.en)+'</div>'+
+      '<div class="nm"'+(b.rest?' onclick="renameRest('+i+')"':'')+'>'+nm+(b.rest?' ✎':'')+'</div>'+
+      '<div class="chips">'+chips+'</div>'+
+      '<div class="durrow">停留 <button class="mini" onclick="dur('+i+',-15)">−</button><span class="dv">'+(b.dur)+' 分</span><button class="mini" onclick="dur('+i+',15)">＋</button></div>'+ 
+      (p&&p.note?'<div class="note">'+p.note+'</div>':'')+
+    '</li>';
+  });
+  $('blocks').innerHTML=h||'<div class="empty">今天還沒有行程。<br>點下方「＋ 地點」從地點庫加入。</div>';
+  $('homeRow').innerHTML=C.home?'<div class="home-row">🏠 回住宿：約 '+C.home.m+' 分（'+C.home.w+'），預計 <b>'+fm(C.homeArr)+'</b> 到家</div>':'';
+  $('total').textContent=C.rows.length?('今日交通合計約 '+C.travel+' 分鐘'):'';
+}
+function tgl(id){$(id).classList.toggle('open')}
+
+/* ================= 操作 ================= */
+function mv(i,d){
+  const bl=S.days[S.cur].blocks, j=i+d;
+  if(j<0||j>=bl.length) return;
+  if(bl[j].locked){toast('相鄰項目已鎖定，改移動其他項目');return}
+  [bl[i],bl[j]]=[bl[j],bl[i]]; save(); render();
+}
+function del(i){
+  const bl=S.days[S.cur].blocks;
+  if(bl[i].locked){toast('此項目已預約鎖定，無法刪除');return}
+  bl.splice(i,1); save(); render();
+}
+function dur(i,d){
+  const b=S.days[S.cur].blocks[i];
+  b.dur=Math.max(15,(b.dur||30)+d); save(); render();
+}
+function renameRest(i){
+  const b=S.days[S.cur].blocks[i];
+  const v=prompt('休息區塊名稱',b.label||'休息／緩衝');
+  if(v!==null){b.label=v.trim()||'休息／緩衝';save();render()}
+}
+$('startTime').addEventListener('change',e=>{S.days[S.cur].start=e.target.value||'09:00';save();render()});
+document.querySelectorAll('#wxseg button').forEach(b=>b.addEventListener('click',()=>{S.mode=b.dataset.m;save();render()}));
+$('btnOpt').addEventListener('click',optimize);
+$('btnRest').addEventListener('click',()=>{S.days[S.cur].blocks.push({rest:1,label:'休息／緩衝',dur:30});save();render();toast('已加入休息區塊，可用 ↑↓ 移到想要的位置')});
+
+/* 加入地點 sheet */
+let areaFilter='all';
+function openSheet(id){$('mask').classList.add('open');$(id).classList.add('open')}
+function closeSheets(){$('mask').classList.remove('open');document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('open'))}
+$('mask').addEventListener('click',closeSheets);
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeSheets));
+$('btnAdd').addEventListener('click',()=>{renderPicker();openSheet('addSheet')});
+$('btnFile').addEventListener('click',()=>{$('storeHint').textContent=canStore?'✅ 已啟用自動儲存：每次修改即存於此瀏覽器，下次開啟自動載入。':'⚠️ 此環境無法自動儲存，請務必用「匯出行程檔」保存進度。';openSheet('fileSheet')});
+
+function renderPicker(){
+  const areas=['all',...AREAORDER.filter(a=>P.some(p=>p.a===a))];
+  $('areasel').innerHTML=areas.map(a=>'<button class="'+(areaFilter===a?'on':'')+'" onclick="setArea(\''+a+'\')">'+(a==='all'?'全部':AREA[a])+'</button>').join('');
+  const list=P.filter(p=>!p.ride&&(areaFilter==='all'||p.a===areaFilter));
+  $('plist').innerHTML=list.map(p=>{
+    const sc=wxScore(p), wx=sc===2?'':(sc===1?'・'+(S.mode==='hot'?'限早晚':'尚可'):'・'+(S.mode==='rainy'?'雨天不宜':'酷暑不宜'));
+    return '<div class="pitem"><div class="info"><div class="nm">'+p.n+'</div><div class="sub">'+AREA[p.a]+'・'+(p.i?'室內':'戶外')+'・約 '+p.d+' 分・孩'+p.k+'・宜'+p.b+wx+'</div></div><button class="add" onclick="addP(\''+p.id+'\')">加入</button></div>';
+  }).join('');
+}
+function setArea(a){areaFilter=a;renderPicker()}
+function addP(pid){
+  S.days[S.cur].blocks.push({pid,dur:PM[pid].d});
+  save(); render(); closeSheets();
+  toast('已加入「'+PM[pid].n+'」，可用 ↑↓ 調整順序');
+}
+
+/* 匯出／匯入／重設 */
+$('btnExport').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='福岡行程-2026-0702.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast('已匯出行程檔');
+});
+$('btnImport').addEventListener('click',()=>$('fileInput').click());
+$('fileInput').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{try{
+    const o=JSON.parse(rd.result);
+    if(!o||o.v!==1||!Array.isArray(o.days)||o.days.length!==10) throw 0;
+    S=o; save(); render(); closeSheets(); toast('已載入行程檔');
+  }catch(err){toast('檔案格式不符，未載入')}};
+  rd.readAsText(f); e.target.value='';
+});
+$('btnReset').addEventListener('click',()=>{
+  if(confirm('確定還原為預設建議行程？目前修改將被清除。')){
+    S={v:1,mode:S.mode,cur:S.cur,days:defaultDays()}; save(); render(); closeSheets(); toast('已還原預設行程');
+  }
+});
+
+render();
+</script>
+</body>
+</html>
